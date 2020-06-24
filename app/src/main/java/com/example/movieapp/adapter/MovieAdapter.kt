@@ -12,14 +12,28 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MovieAdapter (var movieList:List<Result> = ArrayList()):RecyclerView.Adapter<MovieAdapter.MovieViewHolder>()
 {
-    inner class MovieViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
+
+    private var clickListener:ClickListener? =null
+    fun setOnClickListener(clickListener:ClickListener){
+        this.clickListener = clickListener
+    }
+    inner class MovieViewHolder(itemView: View):RecyclerView.ViewHolder(itemView),View.OnClickListener
     {
+        private lateinit var nowPlaying:Result
       fun bindMovie(result: Result){
+          this.nowPlaying = result
          itemView.txt_movie.text = result.title
           Picasso.get()
               .load("https://image.tmdb.org/t/p/w200${result.poster_path}")
               .into(itemView.imageView)
       }
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            clickListener?.onClick(nowPlaying)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -37,6 +51,10 @@ class MovieAdapter (var movieList:List<Result> = ArrayList()):RecyclerView.Adapt
     fun updateMovie(result:List<Result>){
         this.movieList=result
         notifyDataSetChanged()
+    }
+
+    interface ClickListener {
+        fun onClick(result: Result)
     }
 }
 

@@ -11,11 +11,11 @@ import retrofit2.Response
 import javax.security.auth.callback.Callback
 
 class MovieViewModel :ViewModel() {
-var result :MutableLiveData<List<Result>> = MutableLiveData()
-
+//var result :MutableLiveData<List<Results>> = MutableLiveData()
+var result :MutableLiveData< Results> = MutableLiveData()
     //getter
-    fun getResult(): LiveData<List<Result>> = result
-
+//    fun getResult(): LiveData<List<Results>> = result
+    fun getResult(): LiveData<Results> = result
     private val movieApi :MovieApi =MovieApi()
 
     //Setter
@@ -27,12 +27,13 @@ var result :MutableLiveData<List<Result>> = MutableLiveData()
             }
 
             override fun onResponse(call: Call<Results>, response: Response<Results>) {
-                val a =response.body()?.results
-                response.isSuccessful.let {
-                    val resultList = response.body()?.results ?: emptyList()
-                    result.value =resultList
-
-                }
+                val a = Results(response?.body()?.results?: emptyList())
+//                response.isSuccessful.let {
+//                    val resultList = response.body()?.results ?: emptyList()
+//                    result.value =resultList
+//
+//                }
+                result.value = a
             }
 
         })

@@ -1,5 +1,6 @@
 package com.example.movieapp.api
 
+import com.example.movieapp.model.Datas
 import com.example.movieapp.model.Result
 import com.example.movieapp.model.Results
 import retrofit2.Call
@@ -7,9 +8,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MovieApi {
-    private val movieInterface:MovieInterface  //singleton
+    private val movieInterface:MovieInterface
 
-    companion object {
+    companion object {    //singleton
         const val BASE_URL ="https://api.themoviedb.org/3/movie/"
     }
     init {
@@ -22,6 +23,10 @@ class MovieApi {
        fun getMovies(apiKey :String):Call<Results>{
            return movieInterface.getMovies(apiKey)
        }
+
+      fun getMoviesData(apiKey: String, movieId: Int):Call<Datas>{
+          return movieInterface.getMoviesData(movieId, apiKey)
+      }
 
 
 }
